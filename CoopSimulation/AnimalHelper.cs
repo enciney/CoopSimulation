@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace CoopSimulation
 {
@@ -67,54 +69,56 @@ namespace CoopSimulation
 		public static int GetCountOfChildForBorn()
 		{
 			var num = GetRandomNumberInRange();
-			int normalBornPossibility = (int)AnimalSettings.PossibilityOfNonAverageCountOfBorn * 100;
-			int expectedBornCount = AnimalSettings.ExpectedChildNumberAtBorn;
+			int nonExpectedBornPossibility = (int)(AnimalSettings.PossibilityOfNonExpectedCountOfBorn * 100);
+			int expectedBornCount = AnimalSettings.ExpectedChildCountAtBorn;
 			// we have possiblity of borning child count, below we calculate the child count
 			// according to "PossibilityOfNonAverageBreeding" settings
-			if (num < normalBornPossibility)
+			if (num > nonExpectedBornPossibility)
 			{
 				return expectedBornCount;
 			}
 			var extraChildCount = AnimalSettings.MaxChildCountAtBorn - expectedBornCount;
-			var remainPossibility = 100 - normalBornPossibility;
-			var stepForExtraChild = remainPossibility / extraChildCount;
+			var stepForExtraChild = nonExpectedBornPossibility / (double)extraChildCount;
 
-			return expectedBornCount + (int)((num - normalBornPossibility) / stepForExtraChild) + 1;
+			return expectedBornCount + (int)((num) / stepForExtraChild) + 1;
 		}
 
 		public static Gender GetGenderOfBabe()
 		{
 			var num = GetRandomNumberInRange();
-			if(num > (int)Gender.Unknown && num <= (int)Gender.Female)
-			{
-				return Gender.Female;
-			}
-
-			else if(num > (int)Gender.Female && num <= (int)Gender.Male)
+			if(num < AnimalSettings.PercentageOfBornMale* 100)
 			{
 				return Gender.Male;
 			}
+			
+			return Gender.Female;
 
-			return Gender.Unknown;
 
 		}
 
 		public static IList<Animal> ApplyBorn(int currentMonth)
 		{
 			IList<Animal> totalChilds = new List<Animal>();
-			var borns = BornActions.Where(act => act.Value == currentMonth);
-			BornActions = BornActions.Except(borns).ToList();
-			borns.ForEach(act =>
+			var borns = BornActions.Where(act => act.Value == currentMonth).ToList();
+			BornActions.RemoveAll(borns);
+			Parallel.ForEach(borns, act =>
 			{
-				if(act.Value == currentMonth)
+				IList<Animal> childs = new List<Animal>();
+				act.Key.TryBorn(out childs);
+				act.Key.IsPregnant = false;
+				lock (totalChilds)
 				{
-					IList<Animal> childs = new List<Animal>();
-					act.Key.TryBorn(out childs);
-					act.Key.IsPregnant = false;
 					totalChilds.AddRange(childs);
 				}
 			});
-			
+
+			//borns.ForEach(act =>
+			//{
+			//	IList<Animal> childs = new List<Animal>();
+			//	act.Key.TryBorn(out childs);
+			//	act.Key.IsPregnant = false;
+			//	totalChilds.AddRange(childs);
+			//});
 			return totalChilds;
 		}
 
@@ -135,12 +139,10 @@ namespace CoopSimulation
 		// need to check delete wrong
 		public static int CheckAndApplyDie(IList<Animal> animals)
 		{
-			var animalToDie = animals.Where(a => a.Age >= AnimalSettings.LifeTime);
-			var diedAnimalCount = animalToDie.Count();
-			animalToDie.ForEach(anim =>
-			{
-				animals.Remove(anim);
-			});
+			var diedAnimal = animals.Where(a => a.Age >= AnimalSettings.LifeTime);
+			var diedAnimalCount = diedAnimal.Count();
+			animals.RemoveAll(diedAnimal.ToList());
+			//animals.RemoveAll(a => a.Age >= AnimalSettings.LifeTime);
 			return diedAnimalCount;
 		}
 

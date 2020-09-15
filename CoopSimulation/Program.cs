@@ -26,7 +26,6 @@ namespace CoopSimulation
 
 		public static void Initialize(IServiceCollection serviceCollection)
 		{
-			
 			AppConfig = new ConfigurationBuilder()
 			   .SetBasePath(Directory.GetCurrentDirectory())
 			   .AddJsonFile("AppSettings.json", optional: true, reloadOnChange: true).Build();
@@ -43,7 +42,6 @@ namespace CoopSimulation
 			serviceCollection.AddSingleton<CoopSettingsDto>(coopSettings);
 			serviceCollection.AddSingleton<CoopManager>();
 			serviceCollection.AddSingleton<AnimalHelper>();
-			//serviceCollection.AddSingleton<ISettings,SettingsManager>();
 			Provider = serviceCollection.BuildServiceProvider();
 		}
 	}

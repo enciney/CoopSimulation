@@ -8,5 +8,6 @@ namespace CoopSimulation
 	{
 		public int InitialAgeForStartup { get; set; }
 		public int SimulationTime { get; set; }
+		public bool DetailedDebug { get; set; }
 	}
 }

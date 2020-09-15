@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -30,31 +31,33 @@ namespace CoopSimulation
 
 		public void StartSimulation()
 		{
+			Stopwatch timer = new Stopwatch();
+			timer.Start();
 			foreach (int i in Enumerable.Range(1, CoopSettings.SimulationTime))
 			{
 				PassOneMonth(i);
-				PrintStat(i);
+				PrintStat(i, CoopSettings.DetailedDebug);
 			}
-
-			// print number of animal
-			// female, male number / percantage
-			// print number of below age;
-			// 0- readytoMating 
-			// 11- endOfMating
-			// EndOfMating - Lifetime
-			// Died animals
+			PrintStat(CoopSettings.SimulationTime, !CoopSettings.DetailedDebug);
+			timer.Stop();
+			var totalTime = timer.Elapsed.TotalSeconds;
+			Console.WriteLine($"Program execution time : {totalTime} sn ");
+			Console.ReadLine();
 		}
 
-		public void PrintStat(int currentMonth)
+		public void PrintStat(int currentMonth, bool isDetailedDebug = false)
 		{
+			if (isDetailedDebug)
+			{
+				string txt = $"Statictic of Month {currentMonth};\n\n" +
+					$"Total count of {AnimalHelper.GetSpeciesName()} : {AnimalList.Count}\n" +
+					$"Number of female {AnimalList.Where(a => a.Gender == Gender.Female).Count()}," +
+					$" Number of Male {AnimalList.Where(a => a.Gender == Gender.Male).Count()}\n" +
+					$"Total mating  count : {TotalMating}, Last month mating count : {MatingCountThisMonth}\n" +
+					$"Total Dies : {TotalDied}, Last month died count : {DiedCountThisMonth}\n\n\n";
+				Console.WriteLine(txt);
+			}
 			
-			string txt = $"Statictic of Month {currentMonth};\n\n" +
-				$"Total count of {AnimalHelper.GetSpeciesName()} : {AnimalList.Count}\n " +
-			   $"Number of female {AnimalList.Where(a => a.Gender == Gender.Female).Count()} " +
-			   $"number of Male {AnimalList.Where(a => a.Gender == Gender.Male).Count()}\n" +
-			   $"Total mating  count : {TotalMating},  Last month mating count : {MatingCountThisMonth} " +
-			   $"Total Dies : {DiedCountThisMonth}, Last month died count :{DiedCountThisMonth}\n\n\n";
-			Console.WriteLine(txt);
 		}
 
 		public void PassOneMonth(int currentMonth)
