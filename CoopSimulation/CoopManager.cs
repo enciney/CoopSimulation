@@ -49,12 +49,18 @@ namespace CoopSimulation
 		{
 			if (isDetailedDebug)
 			{
+				var matingAge = AnimalHelper.GetAgeOfReadyToMating();
+				var endOfMatingAge = AnimalHelper.GetEndOfMatingAge();
+				var lifeTime = AnimalHelper.GetLifeTime();
 				string txt = $"Statictic of Month {currentMonth};\n\n" +
 					$"Total count of {AnimalHelper.GetSpeciesName()} : {AnimalList.Count}\n" +
 					$"Number of female {AnimalList.Where(a => a.Gender == Gender.Female).Count()}," +
 					$" Number of Male {AnimalList.Where(a => a.Gender == Gender.Male).Count()}\n" +
 					$"Total mating  count : {TotalMating}, Last month mating count : {MatingCountThisMonth}\n" +
-					$"Total Dies : {TotalDied}, Last month died count : {DiedCountThisMonth}\n\n\n";
+					$"Total Dies : {TotalDied}, Last month died count : {DiedCountThisMonth}\n" +
+					$"Count of Adolescent animal (0 - {matingAge - 1}) : {AnimalList.Where(a => a.Age >= 0 && a.Age < matingAge).Count()}\n" +
+					$"Count of Adult animal ({matingAge} - {endOfMatingAge - 1}) : {AnimalList.Where(a => a.Age >= matingAge && a.Age < endOfMatingAge).Count()}\n" +
+					$"Count of Adult animal ({endOfMatingAge} - {lifeTime}) : {AnimalList.Where(a => a.Age >= endOfMatingAge && a.Age <= lifeTime).Count()}\n\n";
 				Console.WriteLine(txt);
 			}
 			

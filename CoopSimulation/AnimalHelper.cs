@@ -28,6 +28,21 @@ namespace CoopSimulation
 			return AnimalSettings.SpeciesName;
 		}
 
+		public static int GetAgeOfReadyToMating()
+		{
+			return AnimalSettings.ReadyToMating;
+		}
+
+		public static int GetLifeTime()
+		{
+			return AnimalSettings.LifeTime;
+		}
+
+		public static int GetEndOfMatingAge()
+		{
+			return AnimalSettings.EndOfMatingAge;
+		}
+
 		public static string GetNewAnimalName()
 		{
 			return AnimalSettings.SpeciesName + NameCounter++.ToString();
