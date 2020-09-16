@@ -104,8 +104,10 @@ Count of Adult animal (12 - 35) : 253
 Count of Old animal (36 - 60) : 21
 ```
 
-# TO DO
-* Inside code I did not use event handlers and task, would be good to wire a event for Born actions
+# More TO DOs & EXPLANATIONS
+* Inside code I did not use event handlers and task, would be good to wire a event for Born actions.
 * Thread is only used as Parallel.ForEach for purpose of Born and here need to use lock since lots of thread trying to manuplate same list.
-* I made a console application only, not ASP.Net core , so I did not use multi-threading and thread-safe code here
-* Semantic check of configuration parameters
+* I made a console application only, not ASP.Net core, so I did not use multi-threading and thread-safe code here, on demand it can be added. 
+* Semantic check of configuration parameters was not added,since this is a study-case project
+* I implemented a concrete **Animal** class intentionally and it will store any type of animal since we have well designed configuration but on demand we can modify this class as abstract and add any concrete class that implement this
+* AnimalHelper responses, animal related jobs + stores animals configuration at current implementation. For animal configuration we may use a seperated class here.
