@@ -60,7 +60,7 @@ namespace CoopSimulation
 					$"Total Dies : {TotalDied}, Last month died count : {DiedCountThisMonth}\n" +
 					$"Count of Adolescent animal (0 - {matingAge - 1}) : {AnimalList.Where(a => a.Age >= 0 && a.Age < matingAge).Count()}\n" +
 					$"Count of Adult animal ({matingAge} - {endOfMatingAge - 1}) : {AnimalList.Where(a => a.Age >= matingAge && a.Age < endOfMatingAge).Count()}\n" +
-					$"Count of Adult animal ({endOfMatingAge} - {lifeTime}) : {AnimalList.Where(a => a.Age >= endOfMatingAge && a.Age <= lifeTime).Count()}\n\n";
+					$"Count of Old animal ({endOfMatingAge} - {lifeTime}) : {AnimalList.Where(a => a.Age >= endOfMatingAge && a.Age <= lifeTime).Count()}\n\n";
 				Console.WriteLine(txt);
 			}
 			
