@@ -2,8 +2,9 @@
 Simulate Specified Species of animal reproduction in coop. 
 
 # Configuration
-All of the configuration stored in **AppSettings.json** file even simulation cycle
-Below the configuration parameter of CoopSimulation;
+All of the configuration stored in **AppSettings.json** file even simulation cycle.
+
+Below the explanation of the configuration parameters;
 
 * **SpeciesName**; name of the animal species
 * **LifeTime**; total life stamp of the animal as month
