@@ -1,5 +1,5 @@
 # CoopSimulation
-Simulate Specified Species of animal reprodcution in coop. 
+Simulate Specified Species of animal reproduction in coop. 
 
 # Configuration
 All of the configuration stored in **AppSettings.json** file even simulation cycle
