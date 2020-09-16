@@ -14,9 +14,7 @@ namespace CoopSimulation
 		private static AnimalSettingsDto AnimalSettings;
 
 		private static  IList<KeyValuePair<Animal, int>> BornActions;
-		public delegate IList<Animal> Born(Animal mom);
 
-		public Born BornEvent;
 		public AnimalHelper(AnimalSettingsDto animalSettings)
 		{
 			AnimalSettings = animalSettings;
